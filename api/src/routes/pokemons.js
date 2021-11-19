@@ -3,6 +3,8 @@ const { Router, response } = require('express');
 const { Pokemon, Type } = require('../db.js');
 const axios = require('axios');
 const router = Router();
+const { getDataPokemonAPI, getIDType, getDataPokemonDB } = require ('../Functions/getData.js');
+const db = require('../db.js');
 
 const {
   API_URL,
@@ -16,36 +18,13 @@ router.get('/:idPokemon', async (req, res, next) => {
     try {
       if(idPokemon.includes('-')){
         dataPokemon = await Pokemon.findById(idPokemon,{include: Type})
-        dataPokemon={
-          id:dataPokemon.id,
-          height:dataPokemon.height,
-          image: 'default',
-          hp: dataPokemon.hp,
-          attack: dataPokemon.attack,
-          defense: dataPokemon.defense,
-          speed: dataPokemon.speed,
-          weight: dataPokemon.weight,
-          types: dataPokemon.types.map(type=>type.type.name), 
-        }
+        dataPokemon=getDataPokemonDB(dataPokemon,true)
       }else{
-        let pokemonResponse=await axios.get(`${API_URL}pokemon/${idPokemon}`)
-        let data= pokemonResponse.data
-        dataPokemon={
-          id:data.id,
-          height:data.height,
-          image: data.sprites.front_default,
-          hp: data.stats.map(stat=>stat.stat.name==="hp"?stat.base_stat:null).filter(data=>data!=null)[0],
-          attack: data.stats.map(stat=>stat.stat.name==="attack"?stat.base_stat:null).filter(data=>data!=null)[0],
-          defense: data.stats.map(stat=>stat.stat.name==="defense"?stat.base_stat:null).filter(data=>data!=null)[0],
-          speed: data.stats.map(stat=>stat.stat.name==="speed"?stat.base_stat:null).filter(data=>data!=null)[0],
-          weight: data.weight,
-          types: data.types.map(type=>type.type.name),
-        }
+        let URLPok=`${API_URL}pokemon/${idPokemon}`;
+        console.log(URLPok)
+        dataPokemon=await getDataPokemonAPI(URLPok); 
       }
-      if(dataPokemon.length>0)
-        res.json(dataPokemon).status(200)
-      else
-        res.send("Not found Pokemon").status(400)
+      res.json(dataPokemon).status(200)
       
     } catch (error) {
       next(error)
@@ -58,21 +37,40 @@ router.get('/', async (req, res, next) => {
   try {
     $enlace='';
     if(name){//existe query
-
+      const url_name=`${API_URL}/pokemon/${name}`;
+      //apiPokemon= await axios.get(url_name).catch(()=> []);
+      apiPokemon= await getDataPokemonAPI(url_name)
+      //console.log(apiPokemon)
+       if(apiPokemon.length===0){
+        let dbpokemons = await Pokemon.findOne({
+          where:{
+              name:name
+          },
+          include:Type
+          })
+          dbpokemons = await dbpokemons.dataValues;
+          apiPokemon = await getDataPokemonDB([dbpokemons],true)
+      } /**/
     }else{
-      let dataapi= await axios.get(
-        `${API_URL}/pokemon`
-      )
-      apiPokemon = dataapi.data.results.map(pokem=>{   
-        let info = axios.get(`${pokem.url}`)
-        return{
-          name:pokem.name,
-          url: pokem.url,
-          info: info,    
-        }
+      let dataapi= await axios.get(`${API_URL}/pokemon?offset=0&limit=40`)
+      apiPokemon = dataapi.data.results.map(async pokem=>{
+        const {id,name,image, height, types} = await getDataPokemonAPI(pokem.url)
+        return {
+          id:id,
+          name: name,
+          image: image,
+          height: height, 
+          types: types}
       })
+      apiPokemon= await Promise.all(apiPokemon)
+      let dbPokem=await Pokemon.findAll({include:Type});
+      dbPokem = dbPokem.map(pokemdata=>{
+        return pokemdata.dataValues
+      })
+      let dataDB = await getDataPokemonDB(dbPokem,true)
+      apiPokemon=[...apiPokemon, ...dataDB]
     }
-    //res.json(apiPokemon).status(200);
+    res.json(apiPokemon).status(200);
     
   } catch (error) {
     next(error)
@@ -80,8 +78,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-    const { name, hp, attack, defense, speed, height, weight } = req.body;
-    console.log(name, hp, attack)
+    const { name, hp, attack, defense, speed, height, weight, types } = req.body;
     try {
        Pokemon.create({
         name, 
@@ -92,10 +89,11 @@ router.post('/', async (req, res, next) => {
         height,
         weight,
       }) 
-      .then(pokemon=>res.send('Pokemon registrado').status(200))
-      //.then(pokemon => pokemon.setTypes(types))
-      //.then(pokemontype => res.json(pokemontype).status(200))
-      
+      //.then( pokemon=>{//res.send(getIDType(types)).status(200))})
+      .then(async pokemon => {
+        return pokemon.setTypes(await getIDType(types))
+      })
+      .then(pokemontype => res.json(pokemontype).status(200))  
     } catch (error) {
       next(error)
     }

@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     hp:{
       type: DataTypes.INTEGER,
@@ -31,5 +32,12 @@ module.exports = (sequelize) => {
     weight:{
       type: DataTypes.FLOAT,
     },
+    image:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'https://as01.epimg.net/meristation/imagenes/2020/02/14/noticias/1581656735_610153_1581656812_noticia_normal.jpg',
+    }
+  },{
+    timestamps:false
   });
 };
