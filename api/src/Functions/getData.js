@@ -30,7 +30,7 @@ async function getDataPokemonAPI(URL){
         id:data.id,
         name:data.name,
         height:data.height,
-        image: data.sprites.front_default,
+        image: data.sprites.other.dream_world.front_default,
         hp: dat("hp"),
         attack: dat("attack"),
         defense: dat("defense"),

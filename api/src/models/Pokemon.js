@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
     image:{
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'https://as01.epimg.net/meristation/imagenes/2020/02/14/noticias/1581656735_610153_1581656812_noticia_normal.jpg',
+      defaultValue: 'https://okdiario.com/img/series/2016/11/05/pokemon.jpg',
     }
   },{
     timestamps:false
