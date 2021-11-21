@@ -17,17 +17,21 @@ router.get('/:idPokemon', async (req, res, next) => {
     let dataPokemon;
     try {
       if(idPokemon.includes('-')){
-        dataPokemon = await Pokemon.findById(idPokemon,{include: Type})
-        dataPokemon=getDataPokemonDB(dataPokemon,true)
+        console.log('bd')
+        //dataPokemon = await Pokemon.findByPk(idPokemon,{include: Type, include:{attributes:['name']}})
+        dataPokemon = await Pokemon.findByPk(idPokemon,{include: [{model: Type,attributes:['name']}]})
+        //console.log([dataPokemon.dataValues])
+        dataPokemon=getDataPokemonDB([dataPokemon.dataValues],false)
       }else{
+        //console.log('axio')
         let URLPok=`${API_URL}pokemon/${idPokemon}`;
-        console.log(URLPok)
+        //console.log(URLPok)
         dataPokemon=await getDataPokemonAPI(URLPok); 
       }
-      res.json(dataPokemon).status(200)
-      
+      if(dataPokemon.length===0) return res.send('Pokemon is not found').status(404)
+      res.json(await dataPokemon).status(200) 
     } catch (error) {
-      next(error)
+      res.send(400).status(404);
     }
 })
 
@@ -38,9 +42,7 @@ router.get('/', async (req, res, next) => {
     $enlace='';
     if(name){//existe query
       const url_name=`${API_URL}/pokemon/${name}`;
-      //apiPokemon= await axios.get(url_name).catch(()=> []);
       apiPokemon= await getDataPokemonAPI(url_name)
-      //console.log(apiPokemon)
        if(apiPokemon.length===0){
         let dbpokemons = await Pokemon.findOne({
           where:{
@@ -48,18 +50,21 @@ router.get('/', async (req, res, next) => {
           },
           include:Type
           })
-          dbpokemons = await dbpokemons.dataValues;
-          apiPokemon = await getDataPokemonDB([dbpokemons],true)
-      } /**/
+          if(dbpokemons!=null){
+            dbpokemons = await dbpokemons.dataValues;
+            apiPokemon = await getDataPokemonDB([dbpokemons],true)
+          }else{
+            apiPokemon='Pokemon is not found'
+          }
+      }
     }else{
       let dataapi= await axios.get(`${API_URL}/pokemon?offset=0&limit=40`)
       apiPokemon = dataapi.data.results.map(async pokem=>{
-        const {id,name,image, height, types} = await getDataPokemonAPI(pokem.url)
+        const {id,name,image, types} = await getDataPokemonAPI(pokem.url)
         return {
           id:id,
           name: name,
           image: image,
-          height: height, 
           types: types}
       })
       apiPokemon= await Promise.all(apiPokemon)
@@ -70,10 +75,10 @@ router.get('/', async (req, res, next) => {
       let dataDB = await getDataPokemonDB(dbPokem,true)
       apiPokemon=[...apiPokemon, ...dataDB]
     }
-    res.json(apiPokemon).status(200);
+    res.send(apiPokemon).status(200);
     
   } catch (error) {
-    next(error)
+    res.send('Pokemons not found').status(404)
   }
 })
 
@@ -95,7 +100,7 @@ router.post('/', async (req, res, next) => {
       })
       .then(pokemontype => res.json(pokemontype).status(200))  
     } catch (error) {
-      next(error)
+      res.send('Name is required to create a new pokemon').status(404)
     }
 })
 

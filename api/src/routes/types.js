@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
       Type.bulkCreate(types)
 
      }
-     if(types.length > 0) res.json(types).status(200)
+     if(types.length > 0) return res.json(types).status(200)
      else res.send('Types not found').status(400)
 
    }catch(e){
