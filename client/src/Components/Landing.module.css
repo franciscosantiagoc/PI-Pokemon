@@ -20,14 +20,17 @@
 }
 .button:hover{
     transform: scale(1.2);
-    animation: girar 1.5s;
+    animation: girar .8s;
     
 }
 
 @keyframes girar {
     0% { transform: rotate(0deg) }
-    25% { transform: rotate(90deg) }
-    50% { transform: rotate(180deg) }
-    75% { transform: rotate(270deg) }
-    100% { transform: rotate(360deg) }
+    15% { transform: rotate(50deg) }
+    30% { transform: rotate(100deg) }
+    45% { transform: rotate(150deg) }
+    60% { transform: rotate(200deg) }
+    75% { transform: rotate(250deg) }
+    90% { transform: rotate(300deg) }
+    100% { transform: rotate(350deg) }
   }
