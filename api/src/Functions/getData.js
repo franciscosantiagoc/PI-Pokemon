@@ -41,8 +41,11 @@ async function getDataPokemonAPI(URL){
     return dataPokemon;
 }
 
-async function getDataPokemonDB(data,global){
+function getDataPokemonDB(data,global){
+    console.log('map')
+    //console.log(data)
     return data.map(Pokem=>{
+        console.log(Pokem)
         if(!global){
             return{
             id:Pokem.id,
@@ -54,7 +57,7 @@ async function getDataPokemonDB(data,global){
             defense: Pokem.defense,
             speed: Pokem.speed,
             weight: Pokem.weight,
-            types: Pokem.types.map(type=>{type.type.name}), 
+            types: Pokem.types.map(type=>type.dataValues.name?type.dataValues.name:type.type.name), 
             }
         }else{
             return{
