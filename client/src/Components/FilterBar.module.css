@@ -1,0 +1,42 @@
+.container {
+    width: 100%;
+    background-color: gray;
+}
+.filters{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.group{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.group select {
+    width: 200px;
+    height: 30px;
+}
+
+.pagination {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.pagination button {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.pagination button:hover {
+    background-color: red;
+    color: #fff;
+    border:solid black 2px;
+}

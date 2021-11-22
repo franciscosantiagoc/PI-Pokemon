@@ -1,0 +1,62 @@
+.modal{
+    position: fixed;
+    background-color: rgba(0,0,0,0.9);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    background-color: #fff;
+    width: 50%;
+    height: 50%;
+}
+
+.head{
+    height: 30%;
+    background-color: red;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.body{
+    font-size: 30px; 
+    height: 100%;
+}
+.body img{
+    width: 200px;
+    height: 200px;
+    margin-top: 30px;
+}
+.body button{
+    width: 150px;
+    height: 40px;
+    background-color: #f04036;
+    border: solid 3px black;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: 50px;
+}
+.body button:hover{
+    background-color: #0a57db;
+    color: #fff;
+}
+
+@media (max-width: 800px) {
+    .container{
+        width: 85%;
+    }
+
+    .body{
+        font-size: 25px; 
+        height: 100%;
+    }
+    .body img{
+        width: 150px;
+        height: 150px;
+        margin-top: 30px;
+    }
+}

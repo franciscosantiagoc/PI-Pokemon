@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Nav() {
     return (
       <nav className={style.container} >
-          <Link to='/'><img className={style.img} src='https://1000marcas.net/wp-content/uploads/2020/01/Pokemon-Logo.png'/></Link>
+          <Link to='/home'><img className={style.img} src='https://1000marcas.net/wp-content/uploads/2020/01/Pokemon-Logo.png'/></Link>
           {<SearchBar/>}    
           <Link to='/Registro'>
               <button className={style.btn}>
