@@ -1,14 +1,22 @@
 import style from './FilterBar.module.css';
-import { pokemonOrigin,orderPokemons } from '../actions/index.js';
+import { pokemonOrigin,orderPokemons,pokepagination } from '../actions/index.js';
 import { connect } from 'react-redux';
 
-function FilterBar({pokemonOrigin,orderPokemons,types}) {
+function FilterBar({pokemonOrigin,pokepagination,types,data,itemsPerPage}) {
+    const arrbtns=[]
+    
+    let nbuttons=Math.ceil(data.length/itemsPerPage);
+    for(let i=0;i<nbuttons;i++){
+        arrbtns.push((i+1))
+    } 
+    
     function filterchange(e){
         let name=e.target.name
-        let value=e.target.value /* */
+        let value=e.target.value
+        if(name==="origin")document.querySelector('select[name="type"] [value="all"]').selected = true;
+        pokemonOrigin(name,value,itemsPerPage)
+    }
 
-        pokemonOrigin(name,value)
-     }
     return (
       <div className={style.container}>
           <div className={style.filters}>
@@ -42,12 +50,7 @@ function FilterBar({pokemonOrigin,orderPokemons,types}) {
             </div>
           </div>
           <div className={style.pagination}>
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
-                <button>5</button>
-                <button>6</button>
+              {arrbtns.map((button,i)=><button key={i} onClick={()=>pokepagination((i+1),itemsPerPage)}>{button}</button>)}
           </div>
           
       </div>
@@ -55,6 +58,7 @@ function FilterBar({pokemonOrigin,orderPokemons,types}) {
   }
   const mapStateToProps = (state) => ({
     types: state.types,
+    data: state.pokemons,
   });
 
-  export default connect(mapStateToProps, {pokemonOrigin,orderPokemons})(FilterBar);
+  export default connect(mapStateToProps, {pokemonOrigin,orderPokemons,pokepagination})(FilterBar);

@@ -1,9 +1,12 @@
 import style from './PokeRegistro.module.css'
-import card from './PokemCard.module.css'
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import image from './../img/pokebola.png';
-export default function PokeRegistro() {
+import { postPokemon,getPokemonTypes } from '../actions/index.js';
+import { connect } from 'react-redux';
+
+function PokeRegistro({postPokemon,getPokemonTypes,types,datapo}) {
+    
     let initialState = {
         name:'',
         image:'',
@@ -13,7 +16,7 @@ export default function PokeRegistro() {
         speed:0,
         height:0,
         weight:0,
-        types:['electric','fire','electric','fire','electric','fire']
+        types:[]
     }
 
     let initialError = {
@@ -30,27 +33,56 @@ export default function PokeRegistro() {
     const [data, setData] = useState(initialState);
     const [error, setError] = useState(initialError);
 
+    useEffect(() => {
+        getPokemonTypes() 
+      },[]);
+
     function validate(e) {
         let ename=e.target.name;
         let value=e.target.value;
-        if(ename==="name" && /\d/.test(value)){
+        if((ename==="name")&& /\d/.test(value)){
             setError({...error,[ename]:'Solo se admiten letras'})
         } else if(ename==="image" && !/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif||svg))/.test(value) && value){
             setError({...error,[ename]:'URL no válida'})
-        } else if(ename!="name" && ename!="image" && !Number.isInteger(value) && !(value>0 && value<=100)){
+        } else if(ename!="types"&&ename!="name" && ename!="image" && !Number.isInteger(value) && !(value>0 && value<=100)){
             setError({...error,[ename]:'Solo se admiten valores numéricos mayor a 0'})
         }else{
             setError({...error,[ename]:''})
         }
-        
-        setData({...data,[ename]:value}); 
+        if(ename==="types"){
+            if(validatype(value))setData({...data,types:[...data.types,value]}); 
+        }
+        else setData({...data,[ename]:value}); 
+      }
+
+      function validatype(value) {
+          if(value=="default")return false;
+          let exist=types.filter(type=>type.name===value)
+          if(exist.length>0){
+            let inclu=data.types.filter(element=>element===value)
+            if(inclu.length===0) return true;
+          }
+          return false
+          
+      }
+
+      function deleteType(position){
+        alert('Type position '+position+' was deleted')
+        setData({...data,types: data.types.filter((type,i)=>i!=position)})
+      }
+
+      function register(e) {
+            if(data.types>0)postPokemon(data)
+            else{
+                alert('Selecciona al menos un typo de pokemon para continuar')
+            }
       }
     return (
         <div className={style.container}>  
             <div className={style.target}>
-                <form className={style.form}>
+                <form className={style.form} onSubmit={(e)=>register(e)}>
                     <div className={style.header}>
-                        <Link to='/home'><img src={image} className={style.icon} alt=""/></Link>
+                        <Link to='/home'><img src={image} className={style.icon} alt="Icono pokebola"/></Link>
                         <h2 className={style.title}>PokeRegistro</h2>
                     </div>
                     <div className={style.group}>
@@ -58,6 +90,14 @@ export default function PokeRegistro() {
                             <label>Escribe el nombre</label>
                             <input type="text" placeholder="Ingrese el nombre" name="name" value={data.name} onChange={(e) => validate(e)}/>
                             {error.name?<span>{error.name}</span>:null}
+                        </div>
+                        <div className={style.formgroup}>
+                            <label>Seleccione los tipos</label>
+                            {types?<select name="types" onChange={(e) => validate(e)}>
+                                <option value="default">Default</option>
+                                {types.map((type,i)=><option value={type.name} key={i}>{type.name}</option>)}
+                            </select>:null}
+                            {error.types?<span>{error.types}</span>:null}
                         </div>
                         <div className={style.formgroup}>
                             <label>Ingrese el hp</label>
@@ -101,7 +141,7 @@ export default function PokeRegistro() {
                 </form>
             </div>
             <div className={` ${style.card}`}>
-                <img className={style.imgPokem} src={data.image?data.image:'https://okdiario.com/img/series/2016/11/05/pokemon.jpg'} />
+                <img className={style.imgPokem} src={data.image?data.image:'https://okdiario.com/img/series/2016/11/05/pokemon.jpg'} alt="Vista previa imagen pokemon"/>
                 <div className={style.data}>
                     <h2> {data.name}</h2>
                     <div className={style.descrip}>
@@ -115,9 +155,9 @@ export default function PokeRegistro() {
                     <div className={style.types}>
                         {
                         data.types.map((type,i) => {
-                            return <abbr title={`Tipo ${type}`}>
+                            return <abbr key={i} title={`Tipo ${type}`}>
                                     <img className={style.iconType} src={`./img/types/${type}.png`} alt={type} />
-                                    <button className={style.btnDel}>x</button>
+                                    <button onClick={()=>deleteType(i)} className={style.btnDel}>x</button>
                                 </abbr>
                         })
                         }
@@ -130,3 +170,8 @@ export default function PokeRegistro() {
         </div>
     );
 }
+ const mapStateToProps = (state) => ({
+    datapo: state.pokemons,
+    types: state.types,
+  }); 
+export default connect(mapStateToProps, {postPokemon,getPokemonTypes})(PokeRegistro);

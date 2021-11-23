@@ -17,10 +17,10 @@ function modal({register,loading,pokemonRegistered}) {
                     {register?<h2>REGISTRO EXITOSO</h2>:null}
                 </div>
                 <div className={style.body}>
-                    {loading?<img src={loadimg} />:null}
+                    {loading?<img src={loadimg} alt="Imagen de pokecarga" />:null}
                     {loading?<p>Cargando datos...</p>:null}
 
-                    {register?<img src={successimg} />:null}
+                    {register?<img src={successimg} alt="Imagen de Registro pokemon exitoso"/>:null}
                     {register?<p>Pokemon Registrado correctamente</p>:null}
                     {register?<button onClick={clicknotif}>Aceptar</button>:null}
                 </div>

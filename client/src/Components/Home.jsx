@@ -4,23 +4,21 @@ import Modal from './modal.jsx';
 import FilterBar from './FilterBar.jsx';
 import PokemCard from './PokemCard.jsx';
 //import {data} from './../data.js'
-import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
-import { getAllPokemons } from '../actions/index.js';
+import { useEffect } from 'react';
+import { getAllPokemons} from '../actions/index.js';
 import { connect } from 'react-redux';
 
- function Home({loading,register,data,aux,getAllPokemons }) {
-   let itemsPerPage = 9;
-   let { page } = useParams();
+ function Home({loading,register,data,getAllPokemons}) {
+  let itemsPerPage = 9;
     useEffect(() => {
-      getAllPokemons()      
+      getAllPokemons(1,itemsPerPage) 
     },[]);
 
     return (
       <div >
         {(loading||register)?<Modal/>:null}
         <Nav/>
-        <FilterBar/>
+        <FilterBar itemsPerPage={itemsPerPage}/>
         <div className={style.card}>
           
           {            
@@ -34,11 +32,10 @@ import { connect } from 'react-redux';
     );
   }
   const mapStateToProps = (state) => ({
-    data: state.pokemons,
-    aux:state.aux,
+    data: state.pagination,
     loading:state.loading,
     register:state.register,
   });
 
-  export default connect(mapStateToProps, {getAllPokemons })(Home);
+  export default connect(mapStateToProps, {getAllPokemons})(Home);
   

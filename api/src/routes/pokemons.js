@@ -29,7 +29,7 @@ router.get('/:idPokemon', async (req, res, next) => {
         dataPokemon=await getDataPokemonAPI(URLPok); 
       }
       if(dataPokemon.length===0) return res.send('Pokemon is not found').status(404)
-      res.json(await dataPokemon).status(200) 
+      res.json(dataPokemon).status(200) 
     } catch (error) {
       res.send(400).status(404);
     }
@@ -43,6 +43,7 @@ router.get('/', async (req, res, next) => {
     if(name){//existe query
       const url_name=`${API_URL}/pokemon/${name}`;
       apiPokemon= await getDataPokemonAPI(url_name)
+      
        if(apiPokemon.length===0){
         let dbpokemons = await Pokemon.findOne({
           where:{
@@ -60,12 +61,14 @@ router.get('/', async (req, res, next) => {
     }else{
       let dataapi= await axios.get(`${API_URL}/pokemon?offset=0&limit=40`)
       apiPokemon = dataapi.data.results.map(async pokem=>{
-        const {id,name,image, types} = await getDataPokemonAPI(pokem.url)
+        const {id,name,image, types, attack} = await getDataPokemonAPI(pokem.url)
         return {
           id:id,
           name: name,
           image: image,
-          types: types}
+          types: types,
+          attack:attack,
+        }
       })
       apiPokemon= await Promise.all(apiPokemon)
       let dbPokem=await Pokemon.findAll({include:Type});

@@ -4,7 +4,7 @@ import img from './../img/404.jpg';
 export default function NotFound() {
     return (
         <div className={style.content}>  
-            <img className={style.img} src={img} />
+            <img className={style.img} src={img} alt="Imagen PokePage 404" />
             <div className={style.desc}>
                 <h2 className={style.title}>Página no encontrada</h2>
                 <p className={style.text}>Parece que andas perdido, la página que solicitaste no existe</p>

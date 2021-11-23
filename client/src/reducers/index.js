@@ -2,10 +2,11 @@ const initialState = {
     pokemons: [],
     aux: [],
     filters:false,
-    pagination:[],
+    details:false,
+    pagination:false,
     loading: false,
     register: false,
-    types:[],
+    types:false,
 }
 
 export default (state = initialState, action) => {
@@ -16,13 +17,14 @@ export default (state = initialState, action) => {
                 ...state,
                 loading: true,
             }
-        case 'RECEIVE_POKEMON':
+        case 'RECEIVE_POKEMONS':
             return {
                 ...state,
                 filters:false,
                 loading: false,
                 aux: action.pokemons,
                 pokemons: action.pokemons,
+                pagination: action.pokemons.slice(0,action.itemsPerPage)
             }
         case 'RECEIVE_TYPES':
             return {
@@ -33,6 +35,12 @@ export default (state = initialState, action) => {
                     else if(ob1.name>ob2.name)return 1;
                     else return 0;
                 }),
+            }
+        case 'RECEIVE_SEARCH':
+            return {
+                ...state,
+                loading: false,
+                details:action.data,
             }
         case 'POKEMON_REGISTERED':
             return {
@@ -81,7 +89,6 @@ export default (state = initialState, action) => {
             }
                 
         case 'POKEMON_NAME_ORASC':
-            console.log('ordenamiento ascendente')
             return {
                 ...state,
                 pokemons: state.filters.sort((ob1,ob2)=>{
@@ -105,7 +112,6 @@ export default (state = initialState, action) => {
         
             
         case 'POKEMON_ATTACK_ORASC':
-            console.log(state.filters)
             return {
                 ...state,
                 pokemons: state.filters.sort((ob1,ob2)=>{
@@ -132,6 +138,18 @@ export default (state = initialState, action) => {
                 ...state,
                 filters: state.pokemons,
                 pokemons:false,
+            }
+        case 'POKEMON_SEARCH':
+            return{
+                ...state,
+                filters: false,
+                details:false,
+                pokemons:false,
+            }
+        case 'PAGINATION_RESET':
+            return{
+                ...state,
+                pagination: false,
             }
          case 'POKEMON_PAGINATION':
             return {
