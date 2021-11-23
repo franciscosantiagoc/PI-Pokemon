@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { getAllPokemons} from '../actions/index.js';
 import { connect } from 'react-redux';
 
- function Home({loading,register,data,getAllPokemons}) {
+ function Home({loading,data,getAllPokemons}) {
   let itemsPerPage = 9;
     useEffect(() => {
       getAllPokemons(1,itemsPerPage) 
@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
     return (
       <div >
-        {(loading||register)?<Modal/>:null}
+        {loading?<Modal/>:null}
         <Nav/>
         <FilterBar itemsPerPage={itemsPerPage}/>
         <div className={style.card}>

@@ -20,7 +20,9 @@ export function getIdPokemon(id) {
     axios.get(`${rutaServidor}/pokemons/${id}`)
       .then(r => r.data)
       .then(d => {
-        dispatch(receiveSearch(d))})
+        if(Array.isArray(d))d=d[0]
+        dispatch(receiveSearch(d))
+      })
       .catch(e => console.log(e));
   }
 };
@@ -40,12 +42,20 @@ export function getNamePokemon(name) {
 };
 
 export function postPokemon(obj) {
+  console.log(obj)
   return function (dispatch) {
     dispatch(getPokemon());
     axios.post(`${rutaServidor}/pokemons`,obj)
-      .then(r => r.data)
-      .then(d => dispatch(pokemonRegistered()))
-      .catch(e => console.log(e));
+      .then(r =>r.data)
+       .then(d => {
+         console.log(d)
+         if(d==='Pokemon existente')dispatch(pokemonNotRegistered())
+         else {dispatch(pokemonRegistered())}
+         
+       }) /**/
+      .catch(e => {
+        alert(`Error al registrar al pokemon ${obj.name}, el pokemon ya existe`)
+        console.log(e.response.status)});
   }
 };
 
@@ -90,6 +100,12 @@ function receiveTypes(types) {
 export function pokemonRegistered(){
   return {
     type: 'POKEMON_REGISTERED',
+  }
+}
+
+export function pokemonNotRegistered(){
+  return {
+    type: 'POKEMON_NOTREGISTERED',
   }
 }
 

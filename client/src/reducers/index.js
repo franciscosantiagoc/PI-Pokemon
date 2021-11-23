@@ -6,6 +6,7 @@ const initialState = {
     pagination:false,
     loading: false,
     register: false,
+    unregister:false,
     types:false,
 }
 
@@ -45,7 +46,13 @@ export default (state = initialState, action) => {
         case 'POKEMON_REGISTERED':
             return {
                 ...state,loading: false,
-                register: !state.register,
+                register: state.unregister?false:!state.register,
+                unregister: false,
+            }
+        case 'POKEMON_NOTREGISTERED':
+            return {
+                ...state,loading: false,
+                unregister: !state.register,
             }
 
         case 'POKEMONS_API':

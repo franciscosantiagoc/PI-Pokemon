@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import image from './../img/pokebola.png';
 import { postPokemon,getPokemonTypes } from '../actions/index.js';
 import { connect } from 'react-redux';
+import Modal from './modal.jsx';
 
-function PokeRegistro({postPokemon,getPokemonTypes,types,datapo}) {
+function PokeRegistro({postPokemon,getPokemonTypes,types,register}) {
     
     let initialState = {
         name:'',
@@ -42,9 +43,9 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,datapo}) {
         let value=e.target.value;
         if((ename==="name")&& /\d/.test(value)){
             setError({...error,[ename]:'Solo se admiten letras'})
-        } else if(ename==="image" && !/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif||svg))/.test(value) && value){
+        } else /* if(ename==="image" && !/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif||svg))/.test(value) && value){
             setError({...error,[ename]:'URL no válida'})
-        } else if(ename!="types"&&ename!="name" && ename!="image" && !Number.isInteger(value) && !(value>0 && value<=100)){
+        } else */ if(ename!="types"&&ename!="name" && ename!="image" && !Number.isInteger(value) && !value>0 ){
             setError({...error,[ename]:'Solo se admiten valores numéricos mayor a 0'})
         }else{
             setError({...error,[ename]:''})
@@ -72,13 +73,17 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,datapo}) {
       }
 
       function register(e) {
-            if(data.types>0)postPokemon(data)
+          e.preventDefault()
+            if(data.types.length>0)postPokemon(data)
             else{
                 alert('Selecciona al menos un typo de pokemon para continuar')
             }
       }
     return (
+        <div>
+            {register?<Modal/>:null}
         <div className={style.container}>  
+            
             <div className={style.target}>
                 <form className={style.form} onSubmit={(e)=>register(e)}>
                     <div className={style.header}>
@@ -168,10 +173,12 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,datapo}) {
                 <button className={style.btnBack}>Volver</button>
             </Link>
         </div>
+        </div>
     );
 }
  const mapStateToProps = (state) => ({
     datapo: state.pokemons,
     types: state.types,
-  }); 
+    register:state.register,
+  });
 export default connect(mapStateToProps, {postPokemon,getPokemonTypes})(PokeRegistro);

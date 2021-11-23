@@ -101,7 +101,8 @@ router.post('/', async (req, res, next) => {
       .then(async pokemon => {
         return pokemon.setTypes(await getIDType(types))
       })
-      .then(pokemontype => res.json(pokemontype).status(200))  
+      .then(pokemontype => res.json(pokemontype).status(200)) 
+      .catch(err => res.send('Pokemon existente').status(404)) 
     } catch (error) {
       res.send('Name is required to create a new pokemon').status(404)
     }
