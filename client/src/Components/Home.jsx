@@ -26,7 +26,7 @@ import { connect } from 'react-redux';
         <div className={style.card}>
           {            
             !loading&&data&&data.map((pokem,i)=>{
-              return <PokemCard key={i} id={pokem.id} name={pokem.name} image={pokem.image} types={pokem.types} />
+              return <PokemCard key={i} id={pokem.id} name={pokem.name} image={pokem.image} types={pokem.types} attack={pokem.attack} />
             })
           }
           {data?.length===0?<div><img className={style.error} src={img404}/><p>Pokemons not found</p></div>:null}

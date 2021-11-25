@@ -59,7 +59,7 @@ router.get('/', async (req, res, next) => {
           }
       }
     }else{
-      let dataapi= await axios.get(`${API_URL}/pokemon?offset=0&limit=40`)
+      let dataapi= await axios.get(`${API_URL}/pokemon?offset=0&limit=70`)
       apiPokemon = dataapi.data.results.map(async pokem=>{
         const {id,name,image, types, attack} = await getDataPokemonAPI(pokem.url)
         return {
