@@ -26,9 +26,20 @@
 .imgcontainer{
     height: 200px;
 }
+
+.imgcontainer:hover{
+    transform: scale(1.2);
+}
+
 .img{
     width: 180px;
     height: 180px;
+    
+}
+.img:hover{
+    transform: scale(1.2);
+    margin-top: 50px;
+    background-color: yellow;
 }
 .description{
     height: 40vh;

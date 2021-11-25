@@ -30,7 +30,6 @@ export function getIdPokemon(id) {
 export function getNamePokemon(name) {
   return function (dispatch) {
     let namen=name.toLowerCase();
-    console.log(namen)
     dispatch(getPokemon());
     axios.get(`${rutaServidor}/pokemons?name=${namen}`)
       .then(r => r.data)

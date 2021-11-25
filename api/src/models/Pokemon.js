@@ -34,6 +34,7 @@ module.exports = (sequelize) => {
     },
     image:{
       type: DataTypes.TEXT,
+      allowNull:false,
       defaultValue: 'https://okdiario.com/img/series/2016/11/05/pokemon.jpg',
     }
   },{

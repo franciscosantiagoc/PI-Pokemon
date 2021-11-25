@@ -29,7 +29,7 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,register}) {
         speed:'Ingrese un valor',
         height:'Ingrese un valor',
         weight:'Ingrese un valor',
-        types:'Ingrese un valor',
+        types:'Selecciona al menos un tipo',
     }
     const [data, setData] = useState(initialState);
     const [error, setError] = useState(initialError);
@@ -76,9 +76,13 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,register}) {
       function register(e) {
           e.preventDefault()
             if(data.types.length>0)postPokemon(data)
-            else{
+            /* else{
                 alert('Selecciona al menos un typo de pokemon para continuar')
-            }
+            } */
+      }
+      function reset_state(){
+        setData(initialState)
+        setError(initialError)
       }
     return (
         <div>
@@ -141,7 +145,8 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,register}) {
                             {error.image?<span>{error.image}</span>:null}
                         </div>
                         <div className={style.formgroup}>
-                            {(!error.name && !error.hp && !error.attack && !error.defense && !error.speed && !error.height && !error.weight)?<button type="submit">Capturar</button>:null}
+                            {(!error.name && !error.hp && !error.attack && !error.defense && !error.speed && !error.height && !error.weight && data.types.length)?<button className={`${style.btn} ${style.regis}`} type="submit">Capturar</button>:null}
+                            <button className={`${style.btn} ${style.reset}`} onClick={reset_state}>Limpiar</button>
                         </div>
                     </div>
                 </form>

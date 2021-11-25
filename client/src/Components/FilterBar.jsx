@@ -11,11 +11,14 @@ function FilterBar({itemsPerPage,page, changePage, pokemonOrigin,pokepagination,
     } 
     
     function filterchange(e){
-        let name=e.target.name
-        let value=e.target.value
-        if(name==="origin")document.querySelector('select[name="type"] [value="all"]').selected = true;
-        if(name!="types" && value!="all")
-            pokemonOrigin(name,value,itemsPerPage)
+        if(e!=null){
+            let name=e.target.name
+            let value=e.target.value
+            if(name==="origin")document.querySelector('select[name="type"] [value="all"]').selected = true;
+            if(name!="types" && value!="all")
+                pokemonOrigin(name,value,itemsPerPage)
+        }
+        click(0)
     }
 
     function click(i) {

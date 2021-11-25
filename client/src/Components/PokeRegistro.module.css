@@ -76,11 +76,9 @@
     margin-bottom: 10px;
     width: 85%;
 }
-
-.formgroup button {
+.btn{
     width: 150px;
     height: 50px;
-    background-color: hsl(130, 92%, 50%);
     border: solid 3px black;
     border-radius: 10px;
     display: flex;
@@ -88,8 +86,18 @@
     align-items: center;
     margin-bottom: 30px;
 }
+.formgroup .regis{
+    
+    background-color: hsl(130, 92%, 50%);
+    
+}
 
-.formgroup button:hover {
+.reset{
+    background-color: red;
+    color: #fff;
+}
+
+.btn:hover {
     background-color: #0a57db;
     color: #fff;
 }

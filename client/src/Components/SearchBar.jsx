@@ -7,7 +7,6 @@ function SearchBar({getNamePokemon}) {
     
     function envio(e) {
         e.preventDefault();
-        alert(name)
         getNamePokemon(name)
     }
     function validaname(e) {
