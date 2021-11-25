@@ -6,21 +6,33 @@
     background-size: 100% 100%;
 }
 .title{
-    color: red;
+    color: #fff;
+    width: 100vw;
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    bottom: 0;
+    padding: 50px 0px;
+    /* border: #fff solid 1px; */
+}
+.title p{
+    font-size: 30px;
+}
+.title h1{
+    font-size: 35px;
 }
 .button{
     width: 200px;
     height: 200px;
     background: url('../img/pokebola.png') red;
     background-size: 100%;
-    position: absolute;
+    /* position: absolute;
     right: 100px;
-    bottom: 50px;
+    bottom: 50px; */
     border-radius: 48%;
 }
 .button:hover{
     transform: scale(1.2);
-    animation: girar .8s;
+    animation: girar .75s;
     
 }
 

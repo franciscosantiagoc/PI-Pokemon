@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
     },
     image:{
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       defaultValue: 'https://okdiario.com/img/series/2016/11/05/pokemon.jpg',
     }
   },{

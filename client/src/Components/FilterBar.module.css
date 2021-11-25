@@ -28,8 +28,9 @@
 }
 
 .pagination button {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
+    margin-top: 15px;
     margin-right: 20px;
     border-radius: 50%;
     background-color: #fff;
@@ -39,4 +40,7 @@
     background-color: red;
     color: #fff;
     border:solid black 2px;
+}
+.active {
+    background-color: blue;
 }

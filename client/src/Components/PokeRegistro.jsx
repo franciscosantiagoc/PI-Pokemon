@@ -41,6 +41,7 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,register}) {
     function validate(e) {
         let ename=e.target.name;
         let value=e.target.value;
+        if(ename==="name")value=value.toLowerCase();
         if((ename==="name")&& /\d/.test(value)){
             setError({...error,[ename]:'Solo se admiten letras'})
         } else /* if(ename==="image" && !/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif||svg))/.test(value) && value){

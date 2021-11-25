@@ -86,7 +86,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-    const { name, hp, attack, defense, speed, height, weight, types } = req.body;
+    const { name, hp, attack, defense, speed, height, weight, types,image } = req.body;
     try {
        Pokemon.create({
         name, 
@@ -96,6 +96,7 @@ router.post('/', async (req, res, next) => {
         speed,
         height,
         weight,
+        image
       }) 
       //.then( pokemon=>{//res.send(getIDType(types)).status(200))})
       .then(async pokemon => {

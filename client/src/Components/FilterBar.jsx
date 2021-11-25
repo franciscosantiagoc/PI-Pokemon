@@ -2,7 +2,7 @@ import style from './FilterBar.module.css';
 import { pokemonOrigin,orderPokemons,pokepagination } from '../actions/index.js';
 import { connect } from 'react-redux';
 
-function FilterBar({pokemonOrigin,pokepagination,types,data,itemsPerPage}) {
+function FilterBar({itemsPerPage,page, changePage, pokemonOrigin,pokepagination,types,data,}) {
     const arrbtns=[]
     
     let nbuttons=Math.ceil(data.length/itemsPerPage);
@@ -14,7 +14,19 @@ function FilterBar({pokemonOrigin,pokepagination,types,data,itemsPerPage}) {
         let name=e.target.name
         let value=e.target.value
         if(name==="origin")document.querySelector('select[name="type"] [value="all"]').selected = true;
-        pokemonOrigin(name,value,itemsPerPage)
+        if(name!="types" && value!="all")
+            pokemonOrigin(name,value,itemsPerPage)
+    }
+
+    function click(i) {
+        pokepagination((i+1),itemsPerPage)
+        changePage(i+1)
+        let buttons=document.querySelectorAll('.btn');
+        buttons[i].style.background='#ff0000'
+        buttons.forEach((btn,pos)=>{
+            btn.style.color='#fff'
+            if(pos!=i)btn.style.background='blue'
+        })
     }
 
     return (
@@ -50,7 +62,8 @@ function FilterBar({pokemonOrigin,pokepagination,types,data,itemsPerPage}) {
             </div>
           </div>
           <div className={style.pagination}>
-              {arrbtns.map((button,i)=><button key={i} onClick={()=>pokepagination((i+1),itemsPerPage)}>{button}</button>)}
+              {arrbtns.map((button,i)=><button key={i} className='btn' onClick={()=>click(i)}>{button}</button>)}
+              <span>Página {page} de {arrbtns.length}</span>
           </div>
           
       </div>

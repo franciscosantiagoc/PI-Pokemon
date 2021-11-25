@@ -36,7 +36,7 @@ export function getNamePokemon(name) {
       .then(r => r.data)
       .then(d => {
         if(Array.isArray(d))d=d[0]
-        dispatch(receivePokemons([d]))})
+        dispatch(receivePokemons([d]))})//[{}]
       .catch(e => console.log(e));
   }
 };

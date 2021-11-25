@@ -12,9 +12,10 @@ router.get('/', async (req, res, next) => {
   //Type.findAll()
   let types;
    try{
-     types = Type.findAll({
+     types =await Type.findAll({
        attributes: ['name']
      });
+     /* console.log( types) */
      if(!types.length){
       types = await axios.get(`${API_URL}type`)
       types = types.data.results.map(type=>{
@@ -28,7 +29,7 @@ router.get('/', async (req, res, next) => {
      else res.send('Types not found').status(400)
 
    }catch(e){
-      next(e);
+//      next(e);
    }
 });
 

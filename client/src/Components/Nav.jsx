@@ -2,9 +2,12 @@
 import SearchBar from "./SearchBar";
 import { Link } from 'react-router-dom';
 export default function Nav() {
+    function reload() {
+        window.location.reload();
+    }
     return (
       <nav className={style.container} >
-          <Link to='/'><img className={style.img} src='https://1000marcas.net/wp-content/uploads/2020/01/Pokemon-Logo.png' alt="Logo pokemon"/></Link>
+          <Link to='/'><img className={style.img} onClick={reload} src='https://1000marcas.net/wp-content/uploads/2020/01/Pokemon-Logo.png' alt="Logo pokemon"/></Link>
           {<SearchBar/>}    
           <Link to='/Registro'>
               <button className={style.btn}>
