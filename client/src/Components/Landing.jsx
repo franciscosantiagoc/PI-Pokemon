@@ -10,14 +10,15 @@ export default function Landing() {
       <div className={style.back}>
           <div className={style.title}>
             <div>
-              <p>Hola sean bienvenidos a la POKEAPI<br/>
-              {/* Proyecto realizado por Francisco Santiago de la Cruz */}
-              </p>
-              {/* <h1>PokeAPI</h1> */}
+              <p>Hola sean bienvenidos a la POKEAPI</p><br/>
+              <span>Proyecto realizado por Francisco Santiago de la Cruz</span>
             </div>
+            <br/>
             <Link to='/home'>
             <button className={style.button}></button>
             </Link>
+            <br/>
+            <span>Click aquí, para empezar el pokerecorrido</span>
           </div>
       </div>
     );

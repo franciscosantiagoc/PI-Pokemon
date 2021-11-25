@@ -1,8 +1,8 @@
 import style from './FilterBar.module.css';
-import { pokemonOrigin,orderPokemons,pokepagination } from '../actions/index.js';
+import { pokemonOrigin,orderPokemons,pokepagination,getAllPokemons } from '../actions/index.js';
 import { connect } from 'react-redux';
 
-function FilterBar({itemsPerPage,page, changePage, pokemonOrigin,pokepagination,types,data,}) {
+function FilterBar({itemsPerPage,page, changePage, pokemonOrigin,pokepagination, getAllPokemons,types,data,}) {
     const arrbtns=[]
     
     let nbuttons=Math.ceil(data.length/itemsPerPage);
@@ -15,10 +15,12 @@ function FilterBar({itemsPerPage,page, changePage, pokemonOrigin,pokepagination,
             let name=e.target.name
             let value=e.target.value
             if(name==="origin")document.querySelector('select[name="type"] [value="all"]').selected = true;
-            if(name!="types" && value!="all")
+            if(name!="types" && value!="all"){
                 pokemonOrigin(name,value,itemsPerPage)
+                click(0)
+            }else getAllPokemons(1,itemsPerPage)
         }
-        click(0)
+        
     }
 
     function click(i) {
@@ -77,4 +79,4 @@ function FilterBar({itemsPerPage,page, changePage, pokemonOrigin,pokepagination,
     data: state.pokemons,
   });
 
-  export default connect(mapStateToProps, {pokemonOrigin,orderPokemons,pokepagination})(FilterBar);
+  export default connect(mapStateToProps, {pokemonOrigin,orderPokemons,pokepagination, getAllPokemons})(FilterBar);
