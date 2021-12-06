@@ -99,7 +99,7 @@ router.post('/', async (req, res, next) => {
         image
       }) 
       //.then( pokemon=>{//res.send(getIDType(types)).status(200))})
-      .then(async pokemon => {
+      .then(async pokemon => {//['bug','flying']
         return pokemon.setTypes(await getIDType(types))
       })
       .then(pokemontype => res.json(pokemontype).status(200)) 

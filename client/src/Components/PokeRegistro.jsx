@@ -44,9 +44,7 @@ function PokeRegistro({postPokemon,getPokemonTypes,types,register}) {
         if(ename==="name")value=value.toLowerCase();
         if((ename==="name")&& /\d/.test(value)){
             setError({...error,[ename]:'Solo se admiten letras'})
-        } else /* if(ename==="image" && !/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif||svg))/.test(value) && value){
-            setError({...error,[ename]:'URL no válida'})
-        } else */ if(ename!="types"&&ename!="name" && ename!="image" && !Number.isInteger(value) && !value>0 ){
+        } else if(ename!="types"&&ename!="name" && ename!="image" && !Number.isInteger(value) && !value>0 ){
             setError({...error,[ename]:'Solo se admiten valores numéricos mayor a 0'})
         }else{
             setError({...error,[ename]:''})
