@@ -1,5 +1,5 @@
 import axios from 'axios';
-let rutaServidor='http://localhost:3001';
+let rutaServidor='https://pokeapi-fco.herokuapp.com';
 
 
 export function getAllPokemons(page=1,itemsPerPage=9) {

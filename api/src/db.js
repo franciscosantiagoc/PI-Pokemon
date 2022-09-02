@@ -6,8 +6,8 @@ const {
   DB_USER, DB_PASSWORD, DB_HOST,
 } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/pokemon`, {
-  logging: false,  //set to console.log to see the raw SQL queries
+const sequelize = new Sequelize(`postgres://jqbfaqtl:N-gBYE7lD5O80CSZFWo9dA8xGh6-v4qt@castor.db.elephantsql.com/jqbfaqtl`, {
+  //logging: false,  //set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
 sequelize.authenticate().then(()=>console.log('conexion success')).catch(e=>console.log('conexion fail',e))
